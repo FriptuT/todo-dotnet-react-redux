@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import {
+  Badge,
   Button,
   Card,
   Divider,
@@ -82,8 +83,14 @@ export default function TaskComponent() {
         <Grid item xs={12} key={item.id}>
           <Stack spacing={3}>
             <ListItem key={item.id}>
-              <MailIcon color="action" />
-              <Typography>{item.id}</Typography>
+              <Badge 
+              badgeContent={item.id} 
+              color="primary"
+              sx={{mr:3}}
+              >
+                <MailIcon color="action" />
+              </Badge>
+              {/* <Typography>{item.id}</Typography> */}
 
               {editMode === item.id ? (
                 <EditMode
@@ -94,7 +101,7 @@ export default function TaskComponent() {
                 />
               ) : (
                 <>
-                  <Typography>{item.text}</Typography>
+                  <Typography variant="h6">{item.text}</Typography>
 
                   <Button
                     color="error"
