@@ -1,38 +1,54 @@
 /* eslint-disable no-unused-vars */
-import { Box, Button, Grid, TextField } from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
 import TaskComponent from "./TaskComponent";
-import { useEffect, useState } from "react";
-import agent from "../consumingApi/agent";
-import React from "react";
-import LibraryAddOutlinedIcon from '@mui/icons-material/LibraryAddOutlined';
-import { addItem, setItems, deleteItem, updateItem } from "./todoSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { Todo } from "../models/Todo";
+import React, { useEffect, useState } from "react";
+import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
 import { useAppDispatch, useAppSelector } from "../store/configureStore";
-
-
+import { addItem, deleteItem, setError, setItems, setLoading } from "./todoSlice";
+import agent from "../consumingApi/agent";
 
 export default function TextInput() {
-  
+  const dispatch = useAppDispatch();
 
-  const [TodoItems, setTodoItems] = useState<Todo[]>([]);
-  const [input, setInput] = useState<string>('');
+  const [newTodo, setNewTodo] = useState("");
+  const [idCounter, setIdCounter] = useState(1);
+  const todos = useAppSelector((state) => state.todo.todos);
 
-    useEffect(() => {
-      agent.TODO.getAll()
-        .then((TodoItems) => setTodoItems(TodoItems))
-        .catch((error) => console.log(error))
-        
-    },[]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try{
+        dispatch(setLoading(true));
 
-    function handleInputChange(event: any) {
-      setInput(event.target.value);
-    }
+        const todos = await agent.TODO.getAll();
 
-    
-    const customButtonStyle = {
-      height: "55px", // Set your desired height
+        console.log(todos);
+
+        dispatch(setItems(todos));
+        dispatch(setLoading(false));
+      }
+      catch(error)
+      {
+        dispatch(setError(error.message));
+        dispatch(setLoading(false));
+      }
     };
+
+    fetchData();
+
+  },[dispatch])
+
+
+  const handleAddTodo = () => {
+    setIdCounter((prev) => prev + 1);
+    dispatch(addItem({ id: idCounter, text: newTodo }));
+    setNewTodo("");
+  };
+
+ 
+
+  const customButtonStyle = {
+    height: "55px", // Set your desired height
+  };
 
   return (
     <Grid container spacing={1} sx={{ mb: 3 }}>
@@ -42,7 +58,8 @@ export default function TextInput() {
           label="Be productive!"
           variant="outlined"
           fullWidth
-          onChange={handleInputChange}
+          value={newTodo}
+          onChange={(e) => setNewTodo(e.target.value)}
         />
       </Grid>
       <Grid item xs={5}>
@@ -51,12 +68,13 @@ export default function TextInput() {
           variant="contained"
           color="success"
           size="large"
+          onClick={handleAddTodo}
         >
           <LibraryAddOutlinedIcon></LibraryAddOutlinedIcon>
         </Button>
       </Grid>
       <Grid item xs={5}>
-        <TaskComponent TodoItems={TodoItems} />
+        <TaskComponent  />
       </Grid>
     </Grid>
   );

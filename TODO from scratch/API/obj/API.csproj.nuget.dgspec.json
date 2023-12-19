@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "M:\\WEB DEVELOPMENT\\TODO from scratch\\API\\API.csproj": {}
+    "M:\\WEB DEVELOPMENT\\REACT\\todo-dotnet-react-redux\\TODO from scratch\\API\\API.csproj": {}
   },
   "projects": {
-    "M:\\WEB DEVELOPMENT\\TODO from scratch\\API\\API.csproj": {
+    "M:\\WEB DEVELOPMENT\\REACT\\todo-dotnet-react-redux\\TODO from scratch\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "M:\\WEB DEVELOPMENT\\TODO from scratch\\API\\API.csproj",
+        "projectUniqueName": "M:\\WEB DEVELOPMENT\\REACT\\todo-dotnet-react-redux\\TODO from scratch\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "M:\\WEB DEVELOPMENT\\TODO from scratch\\API\\API.csproj",
+        "projectPath": "M:\\WEB DEVELOPMENT\\REACT\\todo-dotnet-react-redux\\TODO from scratch\\API\\API.csproj",
         "packagesPath": "C:\\Users\\teodo\\.nuget\\packages\\",
-        "outputPath": "M:\\WEB DEVELOPMENT\\TODO from scratch\\API\\obj\\",
+        "outputPath": "M:\\WEB DEVELOPMENT\\REACT\\todo-dotnet-react-redux\\TODO from scratch\\API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

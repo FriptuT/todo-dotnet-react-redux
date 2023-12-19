@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "dSCfvFfkHwF7or6wdgEC9VxjDCw6DCVnlXhgG2j4raqeYX5fTQXzby0smDqWPToQ2etYk8+F3g7ei1A00WR/pQ==",
+  "dgSpecHash": "0bAz+Ba+Yxa9CqQ/o1fi7CbiwsjiuBuzatNplcDykxVJuMrlQ3lvrmz+qdZ/w4Ykf6HEyBUSHaSB6Y4+z9V0jQ==",
   "success": true,
-  "projectFilePath": "M:\\WEB DEVELOPMENT\\TODO from scratch\\API\\API.csproj",
+  "projectFilePath": "M:\\WEB DEVELOPMENT\\REACT\\todo-dotnet-react-redux\\TODO from scratch\\API\\API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\teodo\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\teodo\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.13\\microsoft.aspnetcore.openapi.7.0.13.nupkg.sha512",

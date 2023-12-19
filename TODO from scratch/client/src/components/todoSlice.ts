@@ -1,39 +1,48 @@
+import agent from "../consumingApi/agent";
 import { Todo } from "../models/Todo";
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction,  createSlice } from "@reduxjs/toolkit";
 
-interface todoState {
-  items: Todo[]
+interface TodoState {
+  todos: Todo[];
+  loading: boolean;
+  error: string | null;
 }
 
-const initialState: todoState = {
-  items: []
+const initialState: TodoState = {
+  todos: [],
+  loading: false,
+  error: null,
 };
+
 
 export const todoSlice = createSlice({
   name: "todo",
   initialState,
   reducers: {
-    setInitialState: (state,action) => {
-      state.items = action.payload;
-    }
-    ,
+    setLoading: (state,action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
+    },
     setItems: (state, action: PayloadAction<Todo[]>) => {
-      state.items = action.payload;
+      state.todos = action.payload;
     },
     addItem: (state, action: PayloadAction<Todo>) => {
-      state.items.push(action.payload);
+      state.todos.push(action.payload);
     },
-    updateItem: (state, action: PayloadAction<Todo>) => {
-      const updatedIndex = state.items.findIndex((item) => item.id === action.payload.id);
+    updateItem: (state, action: PayloadAction<{id: number; text: string}>) => {
+      const { id, text } = action.payload;
+      const updatedIndex = state.todos.findIndex(
+        (todo) => todo.id === id);
       if (updatedIndex !== -1) {
-        state.items[updatedIndex] = action.payload;
+        state.todos[updatedIndex].text = text;
       }
     },
-    deleteItem: (state, action) => {
-      state.items = state.items.filter((item) => item.id !== id);
+    deleteItem: (state, action: PayloadAction<number>) => {
+      state.todos = state.todos.filter((todo) => todo.id !== action.payload);
     },
-  }
+  },
 });
 
-export const { setItems, addItem, updateItem, deleteItem } = todoSlice.actions;
-
+export const {setLoading, setError, setItems, addItem, updateItem, deleteItem } = todoSlice.actions;

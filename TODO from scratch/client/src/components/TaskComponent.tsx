@@ -29,15 +29,16 @@ interface Props {
   TodoItems: Todo[];
 }
 
-export default function TaskComponent({TodoItems}: Props) {
+export default function TaskComponent() {
 
-
+  const todos = useAppSelector(state => state.todo.todos);
+    
 
   return (
     <Card sx={{ minWidth: 275 }}>
-      {TodoItems.map((item) => (
+      {todos.map((item) => (
         <Grid item xs={12} key={item.id}>
-          <CardComponent key={item.id} item={item} />
+          <CardComponent key={item.id} item={item}  />
           <Divider />
           
         </Grid>

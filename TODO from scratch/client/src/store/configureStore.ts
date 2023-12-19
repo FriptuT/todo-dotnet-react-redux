@@ -1,20 +1,19 @@
 /* eslint-disable no-undef */
 import { configureStore } from "@reduxjs/toolkit";
-import {todoSlice} from "../components/todoSlice";
+import rootReducer from "./rootReducer";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { todoSlice } from "../components/todoSlice";
 
 export const store = configureStore({
-    reducer:{
+    reducer: {
         todo: todoSlice.reducer
     }
 });
 
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch
 
-
-
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
-
-
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+export const useAppDispatch: () => AppDispatch = useDispatch
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
