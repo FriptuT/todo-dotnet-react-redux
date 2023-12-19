@@ -12,30 +12,30 @@ export default function TextInput() {
 
   const [newTodo, setNewTodo] = useState("");
   const [idCounter, setIdCounter] = useState(1);
-  const todos = useAppSelector((state) => state.todo.todos);
+  // const todos = useAppSelector((state) => state.todo.todos);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try{
-        dispatch(setLoading(true));
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try{
+  //       dispatch(setLoading(true));
 
-        const todos = await agent.TODO.getAll();
+  //       const todos = await agent.TODO.getAll();
 
-        console.log(todos);
+  //       console.log(todos);
 
-        dispatch(setItems(todos));
-        dispatch(setLoading(false));
-      }
-      catch(error)
-      {
-        dispatch(setError(error.message));
-        dispatch(setLoading(false));
-      }
-    };
+  //       dispatch(setItems(todos));
+  //       dispatch(setLoading(false));
+  //     }
+  //     catch(error)
+  //     {
+  //       dispatch(setError(error.message));
+  //       dispatch(setLoading(false));
+  //     }
+  //   };
 
-    fetchData();
+  //   fetchData();
 
-  },[dispatch])
+  // },[dispatch])
 
 
   const handleAddTodo = () => {
