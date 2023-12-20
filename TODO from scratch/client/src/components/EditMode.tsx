@@ -1,12 +1,14 @@
 import { TextField, Button } from "@mui/material";
 import React from "react";
 import { useState } from "react";
+import { Todo } from "../models/Todo";
 
 interface EditModeProps {
   id: number;
   initialText: string;
   onSave: (id: number, text: string) => void;
   onCancel: () => void;
+  updateTodoItems: (newTodoItems: Todo[]) => void;
 }
 
 export default function EditMode({ id, initialText, onSave, onCancel }) {
