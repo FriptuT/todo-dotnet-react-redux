@@ -12,114 +12,52 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Todo } from "../models/Todo";
-import { useAppDispatch, useAppSelector } from "../store/configureStore";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import MailIcon from "@mui/icons-material/Mail";
-import {
-  deleteItem,
-  setError,
-  setItems,
-  setLoading,
-  updateItem,
-} from "./todoSlice";
 import agent from "../consumingApi/agent";
-import EditMode from "./EditMode";
 
 interface Props {
-  TodoItems: Todo[];
+  todoItems: Todo[];
+  updateTodoItems: (newTodoItems: Todo[]) => void;
 }
 
-export default function TaskComponent() {
-  const dispatch = useAppDispatch();
-  const todos = useAppSelector((state) => state.todo.todos);
+export default function TaskComponent({ todoItems, updateTodoItems }: Props) {
+  const handleDelete = async (id: number) => {
+    try {
+      await agent.TODO.deleteItem(id);
 
-  const [editMode, setEditMode] = useState<number | null>(null);
-  const [editedText, setEditedText] = useState<string>("");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        dispatch(setLoading(true));
-
-        const todos = await agent.TODO.getAll();
-
-        // console.log(todos);
-
-        dispatch(setItems(todos));
-        dispatch(setLoading(false));
-      } catch (error) {
-        dispatch(setError(error.message));
-        dispatch(setLoading(false));
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
-
-  const handleDeleteTodo = (id: number) => {
-    dispatch(deleteItem(id));
-  };
-
-  const handleEditTodo = (id: number, text: string) => {
-    setEditMode(id);
-    setEditedText(text);
-  };
-
-  const handleSaveEdit = (id: number, editedText: string) => {
-    dispatch(updateItem({ id, text: editedText }));
-    setEditMode(null);
-    setEditedText("");
-  };
-
-  const handleCancelEdit = () => {
-    setEditMode(null);
-    setEditedText("");
+      const updatedTodoItems = todoItems.filter((item) => item.id !== id);
+      updateTodoItems(updatedTodoItems);
+    } catch (error) {
+      console.error("Erro deleting item:", error);
+    }
   };
 
   return (
     <Card sx={{ minWidth: 275 }}>
-      {todos.map((item) => (
+      {todoItems.map((item) => (
         <Grid item xs={12} key={item.id}>
           <Stack spacing={3}>
             <ListItem key={item.id}>
-              <Badge 
-              badgeContent={item.id} 
-              color="primary"
-              sx={{mr:3}}
-              >
+              <Badge badgeContent={item.id} color="primary" sx={{ mr: 3 }}>
                 <MailIcon color="action" />
               </Badge>
-              {/* <Typography>{item.id}</Typography> */}
 
-              {editMode === item.id ? (
-                <EditMode
-                  id={item.id}
-                  initialText={item.text}
-                  onSave={(id, text) => handleSaveEdit(id, text)}
-                  onCancel={() => handleCancelEdit()}
-                />
-              ) : (
-                <>
-                  <Typography variant="h6">{item.text}</Typography>
+              <Typography variant="h6">{item.text}</Typography>
 
-                  <Button
-                    color="error"
-                    variant="contained"
-                    sx={{ ml: 19 }}
-                    onClick={() => handleDeleteTodo(item.id)}
-                  >
-                    <DeleteForeverOutlinedIcon />
-                  </Button>
+              <Button
+                color="error"
+                variant="contained"
+                sx={{ ml: 19 }}
+                onClick={() => handleDelete(item.id)}
+              >
+                <DeleteForeverOutlinedIcon />
+              </Button>
 
-                  <Button
-                    variant="contained"
-                    onClick={() => handleEditTodo(item.id, item.text)}
-                  >
-                    <EditIcon />
-                  </Button>
-                </>
-              )}
+              <Button variant="contained">
+                <EditIcon />
+              </Button>
             </ListItem>
           </Stack>
 

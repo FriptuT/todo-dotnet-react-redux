@@ -3,49 +3,39 @@ import { Button, Grid, TextField } from "@mui/material";
 import TaskComponent from "./TaskComponent";
 import React, { useEffect, useState } from "react";
 import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
-import { useAppDispatch, useAppSelector } from "../store/configureStore";
-import { addItem, deleteItem, setError, setItems, setLoading } from "./todoSlice";
 import agent from "../consumingApi/agent";
 
 export default function TextInput() {
-  const dispatch = useAppDispatch();
 
-  const [newTodo, setNewTodo] = useState("");
-  const [idCounter, setIdCounter] = useState(1);
-  // const todos = useAppSelector((state) => state.todo.todos);
+  const [newTodo, setNewTodo] = useState('');
+  const [todoItems, setTodoItems] = useState([]);
+  
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try{
-  //       dispatch(setLoading(true));
+  useEffect(() => {
+    agent.TODO.getAll()
+      .then(todos => setTodoItems(todos))
+      .catch(error => console.log(error))
+  }, [])
 
-  //       const todos = await agent.TODO.getAll();
-
-  //       console.log(todos);
-
-  //       dispatch(setItems(todos));
-  //       dispatch(setLoading(false));
-  //     }
-  //     catch(error)
-  //     {
-  //       dispatch(setError(error.message));
-  //       dispatch(setLoading(false));
-  //     }
-  //   };
-
-  //   fetchData();
-
-  // },[dispatch])
-
-
-  const handleAddTodo = () => {
-    setIdCounter((prev) => prev + 1);
-    dispatch(addItem({ id: idCounter, text: newTodo }));
-    setNewTodo("");
+  const addTodo = (text : string) => {
+     agent.TODO.addItem(text)
+      .catch(error => console.log(error))
+      .then(() => {
+        agent.TODO.getAll()
+          .then(todos => setTodoItems(todos))
+      })
+      .finally(() => setNewTodo(''))
+      console.log("added");
   };
 
- 
+  const handleInputChange = (event: any) => {
+    setNewTodo(event.target.value);
+  }
 
+  const updateTodoItems = (newTodoItems) => {
+    setTodoItems(newTodoItems);
+  }
+  
   const customButtonStyle = {
     height: "55px", // Set your desired height
   };
@@ -59,7 +49,7 @@ export default function TextInput() {
           variant="outlined"
           fullWidth
           value={newTodo}
-          onChange={(e) => setNewTodo(e.target.value)}
+          onChange={handleInputChange}
         />
       </Grid>
       <Grid item xs={5}>
@@ -68,13 +58,13 @@ export default function TextInput() {
           variant="contained"
           color="success"
           size="large"
-          onClick={handleAddTodo}
+          onClick={() => addTodo(newTodo)}
         >
           <LibraryAddOutlinedIcon></LibraryAddOutlinedIcon>
         </Button>
       </Grid>
       <Grid item xs={5}>
-        <TaskComponent  />
+        <TaskComponent todoItems={todoItems} updateTodoItems={updateTodoItems} />
       </Grid>
     </Grid>
   );

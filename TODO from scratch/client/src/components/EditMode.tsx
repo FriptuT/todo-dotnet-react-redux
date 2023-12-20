@@ -19,10 +19,13 @@ export default function EditMode({ id, initialText, onSave, onCancel }) {
   return (
     <>
       <TextField
+        id="outlined-basic"
+        label="edit zone"
         value={editedText}
         onChange={(e) => setEditedText(e.target.value)}
+        variant="outlined"
       />
-      <Button variant="contained" onClick={handleSave}>
+      <Button  variant="contained" onClick={handleSave}>
         Save
       </Button>
       <Button variant="outlined" onClick={onCancel}>
